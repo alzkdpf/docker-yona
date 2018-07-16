@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://git.code21032.synology.me/root2018/yona-cli"
+    "url": "https://github.com/alzkdpf/docker-yona.git"
   },
   "keywords": [
     "yona-docker"
