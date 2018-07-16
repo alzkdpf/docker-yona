@@ -18,12 +18,16 @@ $ git submodule init
 
 $ git submodule update
 ```
-or custom
+or user custom
 
 ```
 $ git clone https://github.com/alzkdpf/docker-yona.git docker-yona
 
 $ cd docker-yona
+
+$ rm -rf yona
+
+$ rm .gitmodules
 
 $ git submodule init
 
