@@ -51,7 +51,7 @@ $ yona-cli docker
 ```
 - container_name (default: yona): 컨테이너명 
 - port (default:9000): 사용할 서비스 포트
-- *YONA_PATH (required): conf 및 repo 저장 경로
+- *YONA_DATA_PATH (required): conf 및 repo 저장 경로
 
 [screen shot](https://youtu.be/sXz55TCA9vs)
 

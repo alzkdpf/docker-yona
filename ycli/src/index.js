@@ -38,7 +38,7 @@ let gen = () => {
     // YONA_DATA path check 
     let yona_data = "";
     while(check.emptyString(yona_data)){
-      yona_data = yield prompt(chalk.yellow("*YONA_PATH (required): "));
+      yona_data = yield prompt(chalk.yellow("*YONA_DATA_PATH (required): "));
     }
 
     // generate path setting
