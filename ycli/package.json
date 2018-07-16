@@ -1,0 +1,32 @@
+{
+  "name": "yona-cli",
+  "version": "1.0.0",
+  "description": "cli tool for yona",
+  "main": "src/index.js",
+  "scripts": {
+    "docker": "node ./src/index.js docker",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://git.code21032.synology.me/root2018/yona-cli"
+  },
+  "keywords": [
+    "yona-docker"
+  ],
+  "bin": {
+    "yona-cli": "./src/index.js"
+  },
+  "author": "code21032@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "check-types": "^7.4.0",
+    "co": "^4.6.0",
+    "co-prompt": "^1.0.0",
+    "commander": "^2.16.0",
+    "fs": "0.0.1-security",
+    "replace": "^1.0.0",
+    "replace-in-file": "^3.4.0"
+  }
+}

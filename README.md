@@ -1,32 +1,53 @@
-# Yona Than you
+Docker for Yona
+---
+
+# Activator install 
+```
+#!/bin/bash
+# download archive
+curl -O http://downloads.typesafe.com/typesafe-activator/1.2.10/typesafe-activator-1.2.10-minimal.zip
+# unzip
+unzip typesafe-activator-1.2.10-minimal.zip
+```
 
 # Description
-Yona Docker 기존 사용자 업그레이드용 docker package 입니다.
 
-# use
+Yona 용 도커 컨테이너입니다. 기존에 bin 타입 대신 소스를 직접 빌드해 사용할 수 있게 패키징 했습니다.
+개발용으로 사용하실 분들이나 이미 별도의 fork 로 작업 중이신 분들은 간단히 submodule 변경으로 사용가능하십니다.
 
-1. clone
-git clone https://github.com/alzkdpf/docker-yona-upgrade-pack
+# 1. 서브 모듈 추가 
 
-2. config.sh 수정
+* 설치 방법
 ```
-cd ./config/
-vi config.sh
-```
-YONA_HOME : yona Running id가 저장될 홈 디렉토리
-YONA_DATA : conf, repo 가 저장된 디렉토리 경로
-YONA_PORT : 서비스 포트
-YONA_DB_CONTAINER_NAME : yona docker database container name
-DB_DEFAULT_URL_DOMAIN : localhost or com.your.domain
-```
-ex>
-jdbc:mysql://localhost:3306/yona?characterEncoding=utf-8
-or
-jdbc:mysql://com.your.domain:3306/yona?characterEncoding=utf-8
+$ git clone https://github.com/alzkdpf/docker-yona.git docker-yona
+
+$ cd docker-yona
+
+$ git submodule init
+
+$ git submodule add https://github.com/yona-projects/yona.git ./yona
 ```
 
-3. create image
-./make_container.sh
+# 2. CLI install
 
-4. 실행
-./bin/run_docker.sh
+* node.js 를 인스톨 후 실행해주세요. 
+[다운로드 |downaload|](https://nodejs.org/ko/download/current/)
+```
+$ cd ycli
+
+$ npm install -g
+
+```
+* (E-ACCESS 오류시 sudo npm install -g 로 실행해 주세요.)
+
+# 3. 실행
+
+```
+$ yona-cli docker
+```
+[screen shot](https://youtu.be/sXz55TCA9vs)
+
+```
+$ dokcer-compose up -d --build
+```
+

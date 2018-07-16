@@ -1,0 +1,14 @@
+version: '3.3'
+services:
+  yona:
+    container_name: yona
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '9002:9000'
+    volumes:
+      - ./data:/yona/data
+    restart: always
+    env_file:
+      - ./envs/default.env

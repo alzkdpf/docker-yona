@@ -1,17 +1,28 @@
-FROM ubuntu:latest
+FROM ubuntu:16.04
 MAINTAINER michael <code21032@gmail.com>
 
 LABEL Description="Ubuntu yona"
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y update && apt-get -y install \
-   && apt-get -y upgrade && apt-get -y install ntp software-properties-common \
-   && echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections \
-   && echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections \
-   && add-apt-repository -y ppa:webupd8team/java \
-   && apt-get -y update \
-   && apt-get -y install oracle-java8-installer \
-   && apt-get install -y oracle-java8-set-default \
-   && echo Asia/Seoul | tee /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
+ENV ACTIVATOR_VERSION 1.2.10
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y update \
+&& apt-get -y upgrade && apt-get -y install ntp software-properties-common \
+&& echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections \
+&& echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections \
+&& add-apt-repository -y ppa:webupd8team/java
+
+RUN apt-get update
+
+# install java
+RUN apt-get install -y oracle-java8-installer
+RUN apt-get install -y oracle-java8-set-default
+
+RUN apt-get install -y curl
+
+# setup timezone
+RUN apt-get install -y tzdata
+RUN echo Asia/Seoul | tee /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
+RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
@@ -21,42 +32,22 @@ RUN apt-get install -y unzip
 ## remove cache
 RUN rm -rf /var/cache/oracle-jdk8-installer && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-## add user
-RUN useradd -m -d /yona -s /bin/bash -U yona
+# Download and install Activator
+RUN mkdir -p /opt/activator-dist-$ACTIVATOR_VERSION
+RUN wget --output-document /opt/typesafe-activator-$ACTIVATOR_VERSION.zip http://downloads.typesafe.com/typesafe-activator/$ACTIVATOR_VERSION/typesafe-activator-$ACTIVATOR_VERSION.zip
+RUN unzip /opt/typesafe-activator-$ACTIVATOR_VERSION.zip -d /opt
+RUN rm -f /opt/typesafe-activator-$ACTIVATOR_VERSION.zip
+RUN mv /opt/activator-$ACTIVATOR_VERSION /opt/activator
 
-RUN mkdir /yona/downloads
+COPY ./yona /yona/home
 
-## add entrypoints
-RUN chmod +x /yona
+## run yona command
+WORKDIR /yona/home
 
-## yona download link
-ENV YONA_LATEST_VERSION_LINK "https://github.com/yona-projects/yona/releases/download/v1.7.0/yona-v1.7.0-bin.zip"
+ENV PORT 9000
+ENV YONA_DATA /yona/data
+ENV JAVA_OPTS -Xmx2048m -Xms1024m -Dyona.data=$YONA_DATA -DapplyEvolutions.default=true -Dhttp.port=$PORT
+RUN /opt/activator/activator dist
+RUN set -x && unzip -d svc target/universal/*.zip && mv svc/*/* svc/ && rm svc/bin/*.bat && mv svc/bin/* svc/bin/start
 
-RUN cd /yona/downloads; \
-    wget http://downloads.typesafe.com/typesafe-activator/1.2.10/typesafe-activator-1.2.10-minimal.zip &&\
-    unzip typesafe-activator-1.2.10-minimal.zip
-
-## install yona
-RUN cd /yona/downloads; \
-    wget -O yona.zip $YONA_LATEST_VERSION_LINK &&\
-    unzip -d /yona/release yona.zip
-
-
-## set environment variables
-ENV YONA_HOME "/yona/home"
-ENV YONA_DATA "/yona_data"
-ENV JAVA_OPTS "-Xmx2048m -Xms2048m"
-ENV PATH $PATH:/yona/downloads/activator-1.2.10-minimal
-
-## add entrypoints
-ADD ./entrypoints /yona/entrypoints
-RUN chmod +x /yona/entrypoints/*.sh
-
-## yobi home directory mount point from host to docker container
-VOLUME ["/yona/source", "/yona/home"]
-
-## yobi service port expose from docker container to host
-EXPOSE 9000
-
-## run yobi command
-CMD ["sh","/yona/entrypoints/run.sh"]
+CMD ["/yona/home/svc/bin/start"]

@@ -1,0 +1,3 @@
+[submodule "yona"]
+	path = yona
+	url = https://github.com/yona-projects/yona.git
