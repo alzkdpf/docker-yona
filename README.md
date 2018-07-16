@@ -1,15 +1,6 @@
 Docker for Yona
 ---
 
-# Activator install 
-```
-#!/bin/bash
-# download archive
-curl -O http://downloads.typesafe.com/typesafe-activator/1.2.10/typesafe-activator-1.2.10-minimal.zip
-# unzip
-unzip typesafe-activator-1.2.10-minimal.zip
-```
-
 # Description
 
 Yona 용 도커 컨테이너입니다. 기존에 bin 타입 대신 소스를 직접 빌드해 사용할 수 있게 패키징 했습니다.
@@ -26,6 +17,8 @@ $ cd docker-yona
 $ git submodule init
 
 $ git submodule add https://github.com/yona-projects/yona.git ./yona
+or
+$ git submodule add https://<your repository> ./yona
 ```
 
 # 2. CLI install
