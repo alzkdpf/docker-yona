@@ -59,6 +59,7 @@ $ yona-cli docker
 
 [screen shot](https://youtu.be/sXz55TCA9vs)
 
+# 4. docker 실행 
 ```
 $ dokcer-compose up -d --build
 ```
