@@ -16,10 +16,21 @@ $ cd docker-yona
 
 $ git submodule init
 
-$ git submodule add https://github.com/yona-projects/yona.git ./yona
-or
-$ git submodule add https://<your repository> ./yona
+$ git submodule update
 ```
+or custom
+
+```
+$ git clone https://github.com/alzkdpf/docker-yona.git docker-yona
+
+$ cd docker-yona
+
+$ git submodule init
+
+$ git submodule add https://<your yona repo> ./yona
+```
+
+* 
 
 # 2. CLI install
 
@@ -38,6 +49,10 @@ $ npm install -g
 ```
 $ yona-cli docker
 ```
+- container_name (default: yona): 컨테이너명 
+- port (default:9000): 사용할 서비스 포트
+- *YONA_PATH (required): conf 및 repo 저장 경로
+
 [screen shot](https://youtu.be/sXz55TCA9vs)
 
 ```
