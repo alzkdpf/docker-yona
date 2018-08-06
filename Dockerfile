@@ -50,4 +50,5 @@ ENV JAVA_OPTS -Xmx2048m -Xms1024m -Dyona.data=$YONA_DATA -DapplyEvolutions.defau
 RUN /opt/activator/activator dist
 RUN set -x && unzip -d svc target/universal/*.zip && mv svc/*/* svc/ && rm svc/bin/*.bat && mv svc/bin/* svc/bin/start
 
-CMD ["/yona/home/svc/bin/start"]
+ADD boot.sh /opt
+CMD ["nohup","/opt/boot.sh"]
